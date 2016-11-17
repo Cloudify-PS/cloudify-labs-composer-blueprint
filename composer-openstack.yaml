@@ -47,7 +47,7 @@ node_templates:
       resource_id: { get_input: security_group_name }
 
   composer_host:
-    type: acomposer.nodes.MonitoredServer
+    type: composer.nodes.MonitoredServer
     properties:
       server:
         image: { get_input: image_id }
