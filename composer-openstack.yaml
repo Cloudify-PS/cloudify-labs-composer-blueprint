@@ -1,0 +1,80 @@
+osca_definitions_version: cloudify_dsl_1_3
+
+imports:
+
+  - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml 
+  - http://www.getcloudify.org/spec/openstack-plugin/1.4/plugin.yaml 
+  - http://www.getcloudify.org/spec/diamond-plugin/1.3.3/plugin.yaml 
+  - types/composer.yaml
+
+inputs:
+
+  image_id:
+    type: string
+    default: 'ebab03e6-a674-4b6e-8f60-691c90fbcdc6'
+    # cent 7.2
+
+  flavor_id:
+    type: string
+    default: '05a9e6d1-d29f-4e98-9eab-51c9a6beed44'
+    # 1 cpu 2 GB ram 20G
+
+  agent_user:
+    type: string
+    default: 'centos'
+
+  security_group_name:
+    type: string
+    default: 'composer_sg'
+
+  use_existing_sg:
+    type: boolean
+    default: true
+
+
+
+
+node_templates:
+
+
+  floating_ip:
+    type: cloudify.openstack.nodes.FloatingIP
+
+  security_group:
+    type: cloudify.openstack.nodes.SecurityGroup
+    properties:
+      use_external_resource: { get_input: use_existing_sg }
+      resource_id: { get_input: security_group_name }
+
+  composer_host:
+    type: acomposer.nodes.MonitoredServer
+    properties:
+      server:
+        image: { get_input: image_id }
+        flavor: { get_input: flavor_id }
+      cloudify_agent:
+        user: { get_input: agent_user }
+    relationships:
+      - target: floating_ip
+        type: cloudify.openstack.server_connected_to_floating_ip
+      - target: lab_security_group
+        type: cloudify.openstack.server_connected_to_security_group
+
+  composer_host:
+    type: cloudify.nodes.ApplicationModule
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/composer_install.sh
+        start:
+          implementation: scripts/composer_start.sh
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: server
+
+
+outputs:
+  composer:
+    description: Composer Lab
+    value:
+      Composer_IP: { get_attribute: [ floating_ip, floating_ip_address ] }
