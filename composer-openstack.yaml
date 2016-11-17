@@ -45,6 +45,15 @@ node_templates:
     properties:
       use_external_resource: { get_input: use_existing_sg }
       resource_id: { get_input: security_group_name }
+      security_group:
+        description: Security group for Riemman RabbitMQ VMs
+      rules:
+          #ssh port
+        - port: 22
+          remote_ip_prefix: '0.0.0.0/0'
+          #composer port
+        - port: 3000
+          remote_ip_prefix: '0.0.0.0/0'
 
   composer_host:
     type: composer.nodes.MonitoredServer
