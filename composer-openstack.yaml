@@ -60,7 +60,7 @@ node_templates:
       - target: security_group
         type: cloudify.openstack.server_connected_to_security_group
 
-  composer_host:
+  composer:
     type: cloudify.nodes.ApplicationModule
     interfaces:
       cloudify.interfaces.lifecycle:
