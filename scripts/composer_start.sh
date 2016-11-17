@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nohup sudo /opt/cloudify-composer/nodejs/bin/node /opt/cloudify-composer/blueprint-composer/package/server.js > /tpm/composer_exex.log 2>&1
+sudo '/bin/nohup' '/opt/composer/bin/start_composer' > /tmp/composer_exex.log 2>&1 &
