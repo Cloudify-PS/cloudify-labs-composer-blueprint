@@ -57,7 +57,7 @@ node_templates:
     relationships:
       - target: floating_ip
         type: cloudify.openstack.server_connected_to_floating_ip
-      - target: lab_security_group
+      - target: security_group
         type: cloudify.openstack.server_connected_to_security_group
 
   composer_host:
