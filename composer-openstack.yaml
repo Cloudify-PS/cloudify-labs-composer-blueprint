@@ -70,7 +70,7 @@ node_templates:
           implementation: scripts/composer_start.sh
     relationships:
       - type: cloudify.relationships.contained_in
-        target: server
+        target: composer_host
 
 
 outputs:
