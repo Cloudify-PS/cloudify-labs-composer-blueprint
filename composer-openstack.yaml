@@ -84,10 +84,6 @@ node_templates:
 outputs:
   composer:
     description: Composer Lab
-    value:
-      Composer_IP: { get_attribute: [ floating_ip, floating_ip_address ] }
+    value:  { concat: ["http://" , { get_attribute: [ floating_ip , floating_ip_address ] }, ":3000/" ] }
       
-  composer_port:
-    description: Composer Lab
-    value:
-      Composer_Port: 3000
+ 
