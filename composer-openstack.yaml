@@ -85,5 +85,7 @@ outputs:
   composer:
     description: Composer Lab
     value:  { concat: ["http://" , { get_attribute: [ floating_ip , floating_ip_address ] }, ":3000/" ] }
-      
+  credentials:
+    description: Composer Lab
+    value:  "Username: composer Password: composer"     
  
